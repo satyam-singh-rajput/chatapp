@@ -1,5 +1,6 @@
 import Conversation from "../model/conversationmodel.js";
 import Message from "../model/messagemodel.js";
+import { getRecieverSocketId } from "../socket/socket.js";
 
 export const sendMessage = async (req, res) => {
     try {
@@ -27,7 +28,14 @@ export const sendMessage = async (req, res) => {
         {
             conversation.messages.push(newMessage._id); // Assuming `messages` is the field name in the conversation model
         }
+
         await Promise.all([conversation.save(),newMessage.save()]);//this will run in parallel so very fast 
+        const recieverSocketId=getRecieverSocketId(receiverId);
+        console.log("error here  or not ",recieverSocketId);
+        if(recieverSocketId){
+            //io.to(<>socketid).emit() is used to sebd events to some specific clients
+            io.to(recieverSocketId).emit("new Message ", newMessage);
+        }
         res.status(201).json(newMessage);
     } catch (error) {
         console.log(error.message);

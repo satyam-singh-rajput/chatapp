@@ -24,5 +24,18 @@ img {
     max-height: 100%;
     max-width: 100%;
 }
+  
+  .avatar {
+    position: relative;
+}
 
-
+.online-dot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border: 2px solid white; /* To add a small white border around the dot */
+    border-radius: 50%;
+}
